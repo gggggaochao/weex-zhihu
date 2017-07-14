@@ -39,7 +39,7 @@
     }
   }
 </script>
-<style>
+<style scoped>
 	.inner {
 		font-size: 40px;
 		text-align: center;
