@@ -3677,12 +3677,20 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 var stream = weex.requireModule('stream');
 
 exports.default = {
   data: function data() {
     return {
+      refreshing: false,
       rows: [],
       message: 'none',
       imageList: ["https://pic4.zhimg.com/v2-2a7159cf4ef9cc60ffc0698283f6de23.jpg", "https://pic2.zhimg.com/v2-7f92f053b865246328037575ce5cb02d.jpg", "https://pic2.zhimg.com/v2-850ae640073ad2803f3543dbc4397ad5.jpg"]
@@ -3703,6 +3711,12 @@ exports.default = {
     this.renderData(url);
   },
   methods: {
+    onrefresh: function onrefresh() {
+      console.log("onrefresh");
+    },
+    onpullingdown: function onpullingdown() {
+      console.log("onpullingdown");
+    },
     renderData: function renderData(url) {
       var self = this;
       stream.fetch({
@@ -3712,7 +3726,7 @@ exports.default = {
         body: ''
       }, function (res) {
         if (res.data) {
-          // console.log("the result is"+res.stories);
+          // console.log("the result is"+res.stories)
           self.rows = res.data.stories;
         } else {
           console.log("无数据");
@@ -4095,7 +4109,7 @@ exports.default = {
 module.exports = {
   "cell": {
     "width": 750,
-    "height": 250,
+    "height": 200,
     "paddingTop": 10,
     "paddingRight": 20,
     "paddingBottom": 10,

@@ -1,6 +1,10 @@
 <template>
   <div>   
     <list class="scroll">
+      <!-- <header></header> -->
+      <!-- <refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown" :display="refreshing ? 'show' : 'hide'">
+        <text class="indicator">Refreshing ...</text>
+      </refresh> -->
       <cell>
         <slider class="slider" interval="4500" auto-play="true">
           <div class="slider-frame" v-for="item in imageList">
@@ -54,9 +58,12 @@
 </template>
 
 <style scoped>
+  .refresh {
+    
+  }
   .cell {
     width: 750px;
-    height: 250px;
+    height: 200px;
     padding-top: 10px;
     padding-right: 20px;
     padding-bottom: 10px;
@@ -206,6 +213,7 @@
   export default {
     data () {
       return {
+        refreshing: false,
         rows:[],
         message: 'none',
         imageList: ["https://pic4.zhimg.com/v2-2a7159cf4ef9cc60ffc0698283f6de23.jpg",
@@ -229,6 +237,12 @@
       this.renderData(url)
     },
     methods: {
+      onrefresh: function() {
+        console.log("onrefresh")
+      },
+      onpullingdown: function() {
+        console.log("onpullingdown")
+      },
       renderData: function (url) {
         var self = this
         stream.fetch({
@@ -238,7 +252,7 @@
           body: ''
         }, function(res) {
           if(res.data){
-            // console.log("the result is"+res.stories);
+            // console.log("the result is"+res.stories)
             self.rows = res.data.stories
           } else {
             console.log("无数据")
