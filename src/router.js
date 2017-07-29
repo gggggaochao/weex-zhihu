@@ -22,6 +22,6 @@ export default new Router({
     // { path: '/listDetail/9523910', component: ListDetail },
     { path: '/iconfont', component: Iconfont},
     { path: '/test', component: Test},
-    { path: '/', redirect: '/list' },
+    { path: '/', redirect: '/test' },
   ]
 })
