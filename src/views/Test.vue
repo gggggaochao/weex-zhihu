@@ -1,6 +1,6 @@
 <template>
   <div>
-    <text style="background-color:#ccc;padding:10px;width:100px;font-size:28px" @click="postMessage()">点我动起</text>
+    <text style="background-color:#ccc;padding:10px;width:100px;font-size:28px" @click="postMessage4()">点我动起</text>
 
     <transition enter-class="slide-fade-enter" mode="out-in" @enter="enter" @leave="leave">
       <div class="square" :style="{backgroundColor:show}" :key="show">
@@ -48,10 +48,67 @@
   export default {
     data () {
       return {
-        show:'red'
+        show:'red',
+        document_id: 1,
+        device_id: 12
       }
     },
     methods:{
+      postMessage4() {
+        let vm = this
+        var sensors = [{"sensor_name":"s1","standard_value":12,"warning_value":234,"primary":1},{"sensor_name":"s2","standard_value":52,"warning_value":70,"primary":0},{"sensor_name":"s3","standard_value":53,"warning_value":70,"primary":0},{"sensor_name":"s4","standard_value":54,"warning_value":70,"primary":0}]
+        var token = "02ada227b7254e1703d1d2e5d9a7df41"
+        var postData = "document_id="+vm.document_id+"&&device_id="+vm.device_id+"&&sensor_config="+JSON.stringify(sensors)+"&&token="+token
+        console.log(postData)
+        stream.fetch({
+          method: 'POST',
+          type: 'json',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          // url: 'http://localhost/json.php',
+          url: vm.serverApi +'/document/bind.json', //前面的部分
+          body: postData
+        },function (res){
+          console.log(res)
+        })
+      },
+      postMessage3 () {
+        let vm = this
+        var postData = "document_id="+vm.document_id
+        stream.fetch({
+          method: 'POST',
+          type: 'json',
+          headers: {
+            'Content-Type':'application/x-www-form-urlencoded' 
+          },
+          url: vm.serverApi +'/document/getSensorConfig.json', //前面的部分
+          body: postData
+        }, function(res){
+          console.log("res: "+JSON.stringify(res))
+          console.log("1")
+          console.log("res.data"+res.data)
+          console.log("res.data.ret: "+res.data.ret)
+          console.log("2")
+          // console.log("res: "+JSON.stringify(res))
+          // // vm.sensors = []
+          // console.log("res.data.ret: "+res.data.ret)
+          // var data = JSON.parse(res.data.data)
+          // for (var i=0 ; i<data.length;i++) {
+          //   console.log(i)
+          //   console.log("item: "+data[i].sensor_name)
+            // vm.sensors.push({
+            //   name: res.data.data[i].sensor_name,
+            //   realTimeVal: 1,
+            //   stdVal: standard_value,
+            //   warningVal: warning_value,
+            //   isPrimary: Boolean(primary),
+            //   isCurrent: true,
+            // })
+          // }
+          vm.sensors = res.data.data
+        })
+      },
       postMessage () {
         // this.show = this.show === 'red'?'blue':'red'
 
@@ -74,6 +131,25 @@
           body: httpBuildQuery(postData)
         }, function(res){
 
+        })
+      },
+      postMessage2() {
+        let vm = this
+        var postData = "document_id="+1;
+        console.log("postData: "+postData)
+        stream.fetch({
+          method: 'POST',
+          type: 'json',
+          headers: {
+            'Content-Type':'application/x-www-form-urlencoded' 
+          },
+          url: vm.serverApi +'/measure/count.json', //前面的部分
+          body: postData
+        }, function(res){
+          console.log(res)
+          console.log(1)
+          var key = "2017-08-02"
+          console.log(res.data.data.day[key])      
         })
       },
       enter: function (el, done) {
